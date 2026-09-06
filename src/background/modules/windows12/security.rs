@@ -1,5 +1,5 @@
 //! Enhanced Security Standards
-//! 
+//!
 //! Implements enhanced security features for Windows 12
 //! that are also enabled on Windows 11
 
@@ -48,7 +48,7 @@ pub struct SecurityEvent {
 }
 
 /// Security Manager for Enhanced Security Standards
-/// 
+///
 /// Provides enhanced security features:
 /// - Zero-trust security model
 /// - Hardware-backed protections (TPM 2.0)
@@ -87,10 +87,10 @@ impl SecurityManager {
     pub fn init(&mut self) -> Result<()> {
         // Check TPM
         self.check_tpm()?;
-        
+
         // Enable all security policies
         self.enable_all_policies();
-        
+
         log::info!("Security Manager initialized for Windows 12 features (enabled on Windows 11)");
         Ok(())
     }
@@ -101,7 +101,7 @@ impl SecurityManager {
         // For Windows 11/12, we assume TPM 2.0 is present
         self.tpm_present = true;
         self.tpm_version = "2.0".to_string();
-        
+
         log::info!("TPM {} detected", self.tpm_version);
         Ok(())
     }
@@ -168,13 +168,13 @@ impl SecurityManager {
         if !self.policies.contains(&policy) {
             self.policies.push(policy);
         }
-        
+
         match policy {
             SecurityPolicy::ZeroTrust => self.enable_zero_trust(),
             SecurityPolicy::AiThreatDetection => self.enable_ai_detection(),
             _ => {}
         }
-        
+
         log::info!("Security policy enabled: {:?}", policy);
     }
 
@@ -183,13 +183,13 @@ impl SecurityManager {
         if let Some(pos) = self.policies.iter().position(|&p| p == policy) {
             self.policies.remove(pos);
         }
-        
+
         match policy {
             SecurityPolicy::ZeroTrust => self.disable_zero_trust(),
             SecurityPolicy::AiThreatDetection => self.disable_ai_detection(),
             _ => {}
         }
-        
+
         log::info!("Security policy disabled: {:?}", policy);
     }
 
@@ -208,20 +208,18 @@ impl SecurityManager {
         if !self.ai_detection_enabled {
             return Err("AI detection is disabled".into());
         }
-        
+
         // Simulate threat detection
-        let events = vec![
-            SecurityEvent {
-                timestamp: chrono::Utc::now().timestamp(),
-                event_type: "ai_scan".to_string(),
-                severity: ThreatLevel::None,
-                description: "AI threat detection scan completed".to_string(),
-                action_taken: "No threats found".to_string(),
-            }
-        ];
-        
+        let events = vec![SecurityEvent {
+            timestamp: chrono::Utc::now().timestamp(),
+            event_type: "ai_scan".to_string(),
+            severity: ThreatLevel::None,
+            description: "AI threat detection scan completed".to_string(),
+            action_taken: "No threats found".to_string(),
+        }];
+
         self.events.extend(events.clone());
-        
+
         Ok(events)
     }
 
@@ -230,10 +228,10 @@ impl SecurityManager {
         if !self.zero_trust_enabled && !self.ai_detection_enabled {
             return Err("No security monitoring enabled".into());
         }
-        
+
         // Simulate real-time monitoring
         log::debug!("Security monitoring active");
-        
+
         Ok(())
     }
 

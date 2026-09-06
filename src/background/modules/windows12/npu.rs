@@ -1,13 +1,13 @@
 //! NPU Accelerator for Deep AI Integration
-//! 
+//!
 //! Implements Neural Processing Unit (NPU) acceleration for Windows 12 features
 //! that are also enabled on Windows 11
 
-use std::sync::Arc;
 use crate::error::Result;
+use std::sync::Arc;
 
 /// NPU Accelerator for Deep AI Integration
-/// 
+///
 /// Provides NPU-powered AI features:
 /// - Natural Language Processing (NLP)
 /// - Background task automation
@@ -54,7 +54,7 @@ impl NpuAccelerator {
         // On Windows 11 and 12, NPU should be available
         self.initialized = true;
         self.npu_available = true;
-        
+
         log::info!("NPU Accelerator initialized for Windows 12 features (enabled on Windows 11)");
         Ok(())
     }
@@ -74,7 +74,7 @@ impl NpuAccelerator {
         if !self.initialized {
             return Err("NPU not initialized".into());
         }
-        
+
         if !self.npu_available {
             return Err("NPU not available on this system".into());
         }
@@ -89,7 +89,7 @@ impl NpuAccelerator {
         if !self.initialized {
             return Err("NPU not initialized".into());
         }
-        
+
         if !self.npu_available {
             return Err("NPU not available on this system".into());
         }
@@ -106,13 +106,16 @@ impl NpuAccelerator {
         if !self.initialized {
             return Err("NPU not initialized".into());
         }
-        
+
         if !self.npu_available {
             return Err("NPU not available on this system".into());
         }
 
         // Simulate NPU-accelerated background processing
-        Ok(tasks.iter().map(|t| format!("NPU-optimized: {}", t)).collect())
+        Ok(tasks
+            .iter()
+            .map(|t| format!("NPU-optimized: {}", t))
+            .collect())
     }
 
     /// Analyze image using NPU
@@ -120,7 +123,7 @@ impl NpuAccelerator {
         if !self.initialized {
             return Err("NPU not initialized".into());
         }
-        
+
         if !self.npu_available {
             return Err("NPU not available on this system".into());
         }

@@ -1,11 +1,11 @@
 //! CorePC Modular Architecture
-//! 
+//!
 //! Implements CorePC modular architecture features for Windows 12
 //! that are also enabled on Windows 11
 
+use crate::error::Result;
 use std::collections::HashMap;
 use std::sync::Mutex;
-use crate::error::Result;
 
 /// Module type for CorePC architecture
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -40,7 +40,7 @@ pub struct ModuleInfo {
 }
 
 /// CorePC Manager for Modular Architecture
-/// 
+///
 /// Provides modular system foundation:
 /// - Component isolation
 /// - Modular updates
@@ -67,7 +67,7 @@ impl CorepcManager {
     pub fn init(&mut self) -> Result<()> {
         // Load core modules
         self.load_core_modules()?;
-        
+
         log::info!("CorePC Manager initialized for Windows 12 features (enabled on Windows 11)");
         Ok(())
     }
@@ -122,10 +122,10 @@ impl CorepcManager {
         if self.modules.contains_key(&module.id) {
             return Err(format!("Module {} already registered", module.id).into());
         }
-        
+
         self.modules.insert(module.id.clone(), module);
         self.modules_loaded += 1;
-        
+
         Ok(())
     }
 
@@ -134,10 +134,10 @@ impl CorepcManager {
         if !self.modules.contains_key(module_id) {
             return Err(format!("Module {} not found", module_id).into());
         }
-        
+
         self.modules.remove(module_id);
         self.modules_loaded -= 1;
-        
+
         Ok(())
     }
 
@@ -151,10 +151,10 @@ impl CorepcManager {
                         return Err(format!("Dependency {} not found", dep).into());
                     }
                 }
-                
+
                 module.is_loaded = true;
                 self.modules_loaded += 1;
-                
+
                 log::info!("Loaded module: {}", module_id);
             }
             Ok(())
@@ -169,7 +169,7 @@ impl CorepcManager {
             if module.is_loaded {
                 module.is_loaded = false;
                 self.modules_loaded -= 1;
-                
+
                 log::info!("Unloaded module: {}", module_id);
             }
             Ok(())
@@ -222,12 +222,12 @@ impl CorepcManager {
         if !self.optimization_enabled {
             return Err("Resource optimization is disabled".into());
         }
-        
+
         log::info!("Optimizing resources across {} modules", self.modules.len());
-        
+
         // In a real implementation, this would balance resources
         // between modules based on usage patterns
-        
+
         Ok(())
     }
 

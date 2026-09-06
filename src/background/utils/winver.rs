@@ -26,9 +26,7 @@ pub fn is_windows_12_features_enabled() -> bool {
 /// Get the Windows version as a numeric value for feature comparison
 pub fn windows_version_num() -> u32 {
     match os_info::get().version() {
-        os_info::Version::Semantic(major, minor, build) => {
-            major * 10000 + minor * 100 + build
-        }
+        os_info::Version::Semantic(major, minor, build) => major * 10000 + minor * 100 + build,
         _ => 0,
     }
 }

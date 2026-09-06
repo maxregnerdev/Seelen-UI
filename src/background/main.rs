@@ -93,7 +93,7 @@ async fn main() -> std::process::ExitCode {
         .expect("Failed to set runtime handle");
 
     rust_i18n::set_locale(&seelen_core::state::Settings::get_app_language());
-    
+
     // Initialize Windows 12 features (enabled on Windows 11)
     // This enables all Windows 12 features on Windows 11 systems
     crate::modules::windows12::init().log_error();

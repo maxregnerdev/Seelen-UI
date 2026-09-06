@@ -1,5 +1,5 @@
 //! Redesigned User Interface
-//! 
+//!
 //! Implements redesigned UI features for Windows 12
 //! that are also enabled on Windows 11
 
@@ -53,7 +53,7 @@ pub enum UiElement {
 }
 
 /// UI Manager for Redesigned User Interface
-/// 
+///
 /// Provides redesigned UI features:
 /// - Floating taskbar with rounded corners
 /// - Translucent elements
@@ -96,7 +96,7 @@ impl UiManager {
         self.enable_floating_taskbar()?;
         self.enable_translucent_elements()?;
         self.enable_adaptive_layout();
-        
+
         log::info!("UI Manager initialized for Windows 12 features (enabled on Windows 11)");
         Ok(())
     }
@@ -105,7 +105,7 @@ impl UiManager {
     pub fn enable_floating_taskbar(&mut self) -> Result<()> {
         self.floating_taskbar_enabled = true;
         self.taskbar_style = TaskbarStyle::Floating;
-        
+
         log::info!("Floating taskbar enabled with rounded corners");
         Ok(())
     }
@@ -114,7 +114,7 @@ impl UiManager {
     pub fn disable_floating_taskbar(&mut self) -> Result<()> {
         self.floating_taskbar_enabled = false;
         self.taskbar_style = TaskbarStyle::Traditional;
-        
+
         log::info!("Floating taskbar disabled");
         Ok(())
     }
@@ -144,7 +144,7 @@ impl UiManager {
     /// Enable translucent elements
     pub fn enable_translucent_elements(&mut self) -> Result<()> {
         self.translucent_elements_enabled = true;
-        
+
         log::info!("Translucent elements enabled with backdrop-filter");
         Ok(())
     }
@@ -152,7 +152,7 @@ impl UiManager {
     /// Disable translucent elements
     pub fn disable_translucent_elements(&mut self) -> Result<()> {
         self.translucent_elements_enabled = false;
-        
+
         log::info!("Translucent elements disabled");
         Ok(())
     }
@@ -166,7 +166,7 @@ impl UiManager {
     pub fn relocate_widgets(&mut self, position: WidgetPosition) -> Result<()> {
         self.widgets_relocated = true;
         self.widget_position = position;
-        
+
         log::info!("Widgets relocated to {:?} for cleaner desktop", position);
         Ok(())
     }
@@ -175,7 +175,7 @@ impl UiManager {
     pub fn reset_widget_positions(&mut self) -> Result<()> {
         self.widgets_relocated = false;
         self.widget_position = WidgetPosition::Right;
-        
+
         log::info!("Widget positions reset");
         Ok(())
     }
@@ -241,7 +241,7 @@ impl UiManager {
         self.enable_translucent_elements()?;
         self.relocate_widgets(WidgetPosition::Right)?;
         self.enable_adaptive_layout();
-        
+
         log::info!("Applied modern, modular UI styling");
         Ok(())
     }
@@ -252,7 +252,7 @@ impl UiManager {
         self.disable_translucent_elements()?;
         self.reset_widget_positions()?;
         self.disable_adaptive_layout();
-        
+
         log::info!("Reset to traditional UI");
         Ok(())
     }

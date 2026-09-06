@@ -1,10 +1,10 @@
 //! Performance and Energy Optimization
-//! 
+//!
 //! Implements performance and energy optimization features for Windows 12
 //! that are also enabled on Windows 11
 
-use std::collections::HashMap;
 use crate::error::Result;
+use std::collections::HashMap;
 
 /// Power mode for performance optimization
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -55,7 +55,7 @@ pub struct ResourceAllocation {
 }
 
 /// Performance Manager for Performance and Energy Optimization
-/// 
+///
 /// Provides performance optimization features:
 /// - Smart power management
 /// - ARM architecture support
@@ -94,11 +94,13 @@ impl PerformanceManager {
     pub fn init(&mut self) -> Result<()> {
         // Initialize resource allocations
         self.init_resource_allocations()?;
-        
+
         // Set initial power mode
         self.set_mode(PowerMode::Balanced)?;
-        
-        log::info!("Performance Manager initialized for Windows 12 features (enabled on Windows 11)");
+
+        log::info!(
+            "Performance Manager initialized for Windows 12 features (enabled on Windows 11)"
+        );
         Ok(())
     }
 
@@ -237,12 +239,12 @@ impl PerformanceManager {
             cpu.allocated = cpu.total;
             cpu.priority = 200;
         }
-        
+
         if let Some(gpu) = self.resource_allocations.get_mut(&ResourceType::Gpu) {
             gpu.allocated = gpu.total;
             gpu.priority = 200;
         }
-        
+
         log::debug!("Resources allocated for maximum performance");
         Ok(())
     }
@@ -253,12 +255,12 @@ impl PerformanceManager {
             cpu.allocated = cpu.total / 2;
             cpu.priority = 50;
         }
-        
+
         if let Some(gpu) = self.resource_allocations.get_mut(&ResourceType::Gpu) {
             gpu.allocated = gpu.total / 2;
             gpu.priority = 50;
         }
-        
+
         log::debug!("Resources allocated for power saving");
         Ok(())
     }
@@ -269,7 +271,7 @@ impl PerformanceManager {
             allocation.allocated = allocation.total * 70 / 100;
             allocation.priority = 100;
         }
-        
+
         log::debug!("Resources balanced");
         Ok(())
     }
@@ -282,7 +284,7 @@ impl PerformanceManager {
 
         // In a real implementation, this would use AI/ML to predict
         // resource needs based on usage patterns
-        
+
         match self.current_mode {
             PowerMode::MaximumPerformance => self.allocate_resources_for_performance(),
             PowerMode::Balanced => self.balance_resources(),
@@ -298,7 +300,7 @@ impl PerformanceManager {
     fn adaptive_allocation(&mut self) -> Result<()> {
         // In a real implementation, this would monitor system usage
         // and adjust resources dynamically
-        
+
         // For now, use a balanced approach
         self.balance_resources()
     }
@@ -319,11 +321,11 @@ impl PerformanceManager {
         if let Some(cpu) = self.resource_allocations.get_mut(&ResourceType::Cpu) {
             cpu.priority = 150;
         }
-        
+
         if let Some(memory) = self.resource_allocations.get_mut(&ResourceType::Memory) {
             memory.priority = 150;
         }
-        
+
         log::info!("Optimized for multitasking");
         Ok(())
     }
@@ -334,7 +336,7 @@ impl PerformanceManager {
         if let Some(cpu) = self.resource_allocations.get_mut(&ResourceType::Cpu) {
             cpu.priority = 200;
         }
-        
+
         log::info!("Optimized for single-threaded performance");
         Ok(())
     }
@@ -346,11 +348,11 @@ impl PerformanceManager {
             gpu.priority = 200;
             gpu.allocated = gpu.total;
         }
-        
+
         if let Some(cpu) = self.resource_allocations.get_mut(&ResourceType::Cpu) {
             cpu.priority = 180;
         }
-        
+
         log::info!("Optimized for gaming");
         Ok(())
     }

@@ -1,5 +1,5 @@
 //! Windows 12 Features Module
-//! 
+//!
 //! Implements Windows 12 features that are also enabled on Windows 11:
 //! - Deep AI Integration: NPU acceleration for NLP, background tasks, cognitive search
 //! - Redesigned User Interface: Floating taskbar, translucent elements, relocated widgets
@@ -8,22 +8,22 @@
 //! - Performance and Energy Optimization: ARM support, dynamic resource allocation
 //! - Advanced Gaming Features: DirectStorage, Auto-HDR, Xbox integration
 
-pub mod npu;
 pub mod corepc;
-pub mod security;
-pub mod performance;
 pub mod gaming;
+pub mod npu;
+pub mod performance;
+pub mod security;
 pub mod ui;
 
-pub use npu::*;
 pub use corepc::*;
-pub use security::*;
-pub use performance::*;
 pub use gaming::*;
+pub use npu::*;
+pub use performance::*;
+pub use security::*;
 pub use ui::*;
 
-use std::sync::{Arc, Mutex, OnceLock};
 use crate::error::Result;
+use std::sync::{Arc, Mutex, OnceLock};
 
 /// Windows 12 feature flags
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -56,18 +56,24 @@ impl Windows12Feature {
 
     pub fn description(&self) -> &'static str {
         match self {
-            Windows12Feature::DeepAiIntegration =>
-                "Built from the ground up with advanced artificial intelligence, relying heavily on dedicated Neural Processing Units (NPUs) to power system-wide features like enhanced natural language processing, automated background tasks, and cognitive search capabilities",
-            Windows12Feature::RedesignedUi =>
-                "Features a modern, modular look that often includes a floating taskbar with rounded corners, translucent elements, and system widgets or search bars relocated for a cleaner, more adaptive desktop layout",
-            Windows12Feature::CorepcArchitecture =>
-                "Utilizes a modular system foundation that allows Microsoft to separate core operating system components from apps and drivers, enabling better performance, quicker updates, and optimized resource use across different device types",
-            Windows12Feature::EnhancedSecurity =>
-                "Focuses on a zero-trust security model, featuring advanced hardware-backed protections, continuous real-time threat detection via AI, and strict requirements for hardware security features like TPM 2.0",
-            Windows12Feature::PerformanceOptimization =>
-                "Includes smarter power management geared toward modern mobile processors and ARM architectures, dynamic resource allocation to boost multitasking efficiency, and faster processing for local and cloud workloads",
-            Windows12Feature::AdvancedGaming =>
-                "Upgraded support for technologies like DirectStorage optimizations, auto-HDR improvements, and tighter integration with Xbox services and cloud gaming ecosystems",
+            Windows12Feature::DeepAiIntegration => {
+                "Built from the ground up with advanced artificial intelligence, relying heavily on dedicated Neural Processing Units (NPUs) to power system-wide features like enhanced natural language processing, automated background tasks, and cognitive search capabilities"
+            }
+            Windows12Feature::RedesignedUi => {
+                "Features a modern, modular look that often includes a floating taskbar with rounded corners, translucent elements, and system widgets or search bars relocated for a cleaner, more adaptive desktop layout"
+            }
+            Windows12Feature::CorepcArchitecture => {
+                "Utilizes a modular system foundation that allows Microsoft to separate core operating system components from apps and drivers, enabling better performance, quicker updates, and optimized resource use across different device types"
+            }
+            Windows12Feature::EnhancedSecurity => {
+                "Focuses on a zero-trust security model, featuring advanced hardware-backed protections, continuous real-time threat detection via AI, and strict requirements for hardware security features like TPM 2.0"
+            }
+            Windows12Feature::PerformanceOptimization => {
+                "Includes smarter power management geared toward modern mobile processors and ARM architectures, dynamic resource allocation to boost multitasking efficiency, and faster processing for local and cloud workloads"
+            }
+            Windows12Feature::AdvancedGaming => {
+                "Upgraded support for technologies like DirectStorage optimizations, auto-HDR improvements, and tighter integration with Xbox services and cloud gaming ecosystems"
+            }
         }
     }
 
@@ -92,11 +98,11 @@ pub struct Windows12Info {
 impl Windows12Info {
     pub fn new() -> Self {
         use crate::utils::winver::*;
-        
+
         let is_win12 = is_windows_12();
         let is_win11 = is_windows_11();
         let build = windows_version_num();
-        
+
         // All features are available on Windows 11 and 12
         let features = vec![
             Windows12Feature::DeepAiIntegration,
@@ -106,7 +112,7 @@ impl Windows12Info {
             Windows12Feature::PerformanceOptimization,
             Windows12Feature::AdvancedGaming,
         ];
-        
+
         Self {
             is_windows12: is_win12,
             is_windows11: is_win11,
@@ -161,19 +167,19 @@ impl Windows12State {
 /// Initialize Windows 12 integration
 /// This will enable Windows 12 features on both Windows 11 and Windows 12
 pub fn init() -> Result<()> {
-    let state = WINDOWS12_STATE.get_or_init(|| {
-        Mutex::new(Windows12State::new())
-    });
-    
-    let mut state_lock = state.lock().map_err(|_| "Failed to lock Windows 12 state")?;
+    let state = WINDOWS12_STATE.get_or_init(|| Mutex::new(Windows12State::new()));
+
+    let mut state_lock = state
+        .lock()
+        .map_err(|_| "Failed to lock Windows 12 state")?;
     state_lock.init()
 }
 
 /// Get Windows 12 state
 pub fn get() -> Option<Windows12Info> {
-    WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| s.info.clone())
-    })
+    WINDOWS12_STATE
+        .get()
+        .and_then(|state| state.lock().ok().map(|s| s.info.clone()))
 }
 
 /// Check if Windows 12 features are enabled
@@ -198,42 +204,42 @@ pub fn get_features() -> Vec<Windows12Feature> {
 
 /// Get NPU accelerator
 pub fn npu() -> Option<Arc<Mutex<NpuAccelerator>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.npu.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.npu.clone())))
 }
 
 /// Get CorePC manager
 pub fn corepc() -> Option<Arc<Mutex<CorepcManager>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.corepc.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.corepc.clone())))
 }
 
 /// Get Security manager
 pub fn security() -> Option<Arc<Mutex<SecurityManager>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.security.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.security.clone())))
 }
 
 /// Get Performance manager
 pub fn performance() -> Option<Arc<Mutex<PerformanceManager>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.performance.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.performance.clone())))
 }
 
 /// Get Gaming manager
 pub fn gaming() -> Option<Arc<Mutex<GamingManager>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.gaming.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.gaming.clone())))
 }
 
 /// Get UI manager
 pub fn ui() -> Option<Arc<Mutex<UiManager>>> {
-    WINDOWS12_STATE.get().map(|state| {
-        Arc::new(Mutex::new(state.lock().ok()?.ui.clone()))
-    })
+    WINDOWS12_STATE
+        .get()
+        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.ui.clone())))
 }
