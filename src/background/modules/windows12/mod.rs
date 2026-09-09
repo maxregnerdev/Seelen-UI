@@ -169,9 +169,7 @@ impl FeatureState {
 pub fn init() -> Result<()> {
     let state = FEATURE_STATE.get_or_init(|| Mutex::new(FeatureState::new()));
 
-    let mut state_lock = state
-        .lock()
-        .map_err(|_| "Failed to lock feature state")?;
+    let mut state_lock = state.lock().map_err(|_| "Failed to lock feature state")?;
 
     state_lock.init()
 }
