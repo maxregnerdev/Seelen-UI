@@ -301,11 +301,15 @@ impl GamingManager {
 
     /// Optimize for a specific game
     pub fn optimize_for_game(&mut self, game_name: &str) -> Result<()> {
-        let (uses_direct_storage, supports_auto_hdr, xbox_enabled) =
-            match self.games.get(game_name) {
-                Some(game) => (game.uses_direct_storage, game.supports_auto_hdr, game.xbox_enabled),
-                None => return Err(format!("Game {} not found", game_name).into()),
-            };
+        let (uses_direct_storage, supports_auto_hdr, xbox_enabled) = match self.games.get(game_name)
+        {
+            Some(game) => (
+                game.uses_direct_storage,
+                game.supports_auto_hdr,
+                game.xbox_enabled,
+            ),
+            None => return Err(format!("Game {} not found", game_name).into()),
+        };
 
         if uses_direct_storage {
             self.enable_direct_storage()?;

@@ -205,41 +205,59 @@ pub fn get_features() -> Vec<Windows12Feature> {
 /// Get NPU accelerator
 pub fn npu() -> Option<Arc<Mutex<NpuAccelerator>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.npu.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.npu.clone())))
     })
 }
 
 /// Get CorePC manager
 pub fn corepc() -> Option<Arc<Mutex<CorepcManager>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.corepc.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.corepc.clone())))
     })
 }
 
 /// Get Security manager
 pub fn security() -> Option<Arc<Mutex<SecurityManager>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.security.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.security.clone())))
     })
 }
 
 /// Get Performance manager
 pub fn performance() -> Option<Arc<Mutex<PerformanceManager>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.performance.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.performance.clone())))
     })
 }
 
 /// Get Gaming manager
 pub fn gaming() -> Option<Arc<Mutex<GamingManager>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.gaming.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.gaming.clone())))
     })
 }
 
 /// Get UI manager
 pub fn ui() -> Option<Arc<Mutex<UiManager>>> {
     WINDOWS12_STATE.get().and_then(|state| {
-        state.lock().ok().map(|s| Arc::new(Mutex::new(s.ui.clone())))
+        state
+            .lock()
+            .ok()
+            .map(|s| Arc::new(Mutex::new(s.ui.clone())))
     })
 }
