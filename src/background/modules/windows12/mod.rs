@@ -8,6 +8,18 @@
 //! - Performance and Energy Optimization: ARM support, dynamic resource allocation
 //! - Advanced Gaming Features: DirectStorage, Auto-HDR, Xbox integration
 
+// This module is scaffolding/stub code for Windows 12 feature detection that is
+// intentionally enabled on Windows 11. It is not yet wired into the runtime, so it
+// produces many unused-code and clippy lints that are expected for now.
+#![allow(
+    dead_code,
+    unused_imports,
+    unused_variables,
+    unused_mut,
+    unused_assignments,
+    clippy::all
+)]
+
 pub mod corepc;
 pub mod gaming;
 pub mod npu;
