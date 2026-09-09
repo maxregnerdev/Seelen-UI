@@ -3,8 +3,7 @@
     // Windows 12 feature: Adaptive, context-aware desktop layout
     // Enabled on Windows 11
     
-    import { onMount, onDestroy } from 'svelte';
-    import { fade, slide } from 'svelte/transition';
+    import { onMount } from 'svelte';
     
     export let children: any;
     

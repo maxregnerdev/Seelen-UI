@@ -6,7 +6,6 @@
     import { onMount } from 'svelte';
     
     export let showClock = true;
-    export let showNotifications = true;
     
     interface TrayIcon {
         id: string;
@@ -192,7 +191,7 @@
 
 <div class="system-tray">
     {#if showClock}
-        <div class="clock" on:click={() => console.log('Clock clicked')}>
+        <div class="clock" role="button" tabindex="0" on:click={() => console.log('Clock clicked')} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') console.log('Clock clicked'); }}>
             <span class="time">{currentTime}</span>
             <span class="date">{currentDate}</span>
         </div>
@@ -201,7 +200,10 @@
     {#each trayIcons as icon}
         <div 
             class="tray-icon"
+            role="button"
+            tabindex="0"
             on:click={() => handleIconClick(icon.id)}
+            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleIconClick(icon.id); } }}
         >
             <div class="icon" style="color: {getIconColor(icon)}">
                 {icon.icon}
@@ -216,11 +218,11 @@
     {/each}
     
     {#if showTrayMenu && selectedIcon}
-        <div class="tray-menu {showTrayMenu ? 'visible' : ''}">
-            <div class="menu-item" on:click={() => handleNotificationClick(selectedIcon)}>
+        <div class="tray-menu {showTrayMenu ? 'visible' : ''}" role="menu">
+            <div class="menu-item" role="menuitem" tabindex="0" on:click={() => { if (selectedIcon) handleNotificationClick(selectedIcon); }} on:keydown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && selectedIcon) { e.preventDefault(); handleNotificationClick(selectedIcon); } }}>
                 Clear notifications
             </div>
-            <div class="menu-item" on:click={() => showTrayMenu = false}>
+            <div class="menu-item" role="menuitem" tabindex="0" on:click={() => showTrayMenu = false} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') showTrayMenu = false; }}>
                 Close
             </div>
         </div>

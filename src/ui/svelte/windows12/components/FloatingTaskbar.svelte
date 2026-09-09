@@ -8,10 +8,6 @@
     import StartButton from './StartButton.svelte';
     import SystemTray from './SystemTray.svelte';
     
-    export let position = 'bottom';
-    export let roundedCorners = true;
-    export let translucent = true;
-    
     let isHovered = false;
     
     onMount(() => {
@@ -83,6 +79,7 @@
 </style>
 
 <div class="floating-taskbar" 
+     role="toolbar"
      on:mouseenter={handleMouseEnter}
      on:mouseleave={handleMouseLeave}
      class:hovered={isHovered}>

@@ -3,7 +3,7 @@
     // Windows 12 feature: AI-powered search with NPU indicator
     // Enabled on Windows 11
     
-    import { onMount, afterUpdate } from 'svelte';
+    import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
     
     export let placeholder = 'Search with AI...';
@@ -286,7 +286,7 @@
                 </div>
             {:else}
                 {#each searchResults as result}
-                    <div class="result-item" on:click={() => selectResult(result)}>
+                    <div class="result-item" role="option" tabindex="0" on:click={() => selectResult(result)} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectResult(result); } }}>
                         <span class="result-icon">🔍</span>
                         <span>{result}</span>
                     </div>

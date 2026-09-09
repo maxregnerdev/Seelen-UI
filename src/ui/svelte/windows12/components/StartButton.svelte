@@ -4,7 +4,6 @@
     // Enabled on Windows 11
     
     import { onMount } from 'svelte';
-    import { fade, scale } from 'svelte/transition';
     
     export let size = 32;
     export let showLabel = false;
@@ -92,13 +91,10 @@
     }
     
     .start-icon {
-        width: {size}px;
-        height: {size}px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: {size * 0.6}px;
         font-weight: bold;
     }
     
@@ -124,7 +120,7 @@
     on:mouseleave={handleMouseLeave}
     aria-label="Start menu"
 >
-    <div class="start-icon">
+    <div class="start-icon" style="width: {size}px; height: {size}px; font-size: {size * 0.6}px;">
         <svg class="windows-logo" viewBox="0 0 24 24" fill="currentColor">
             <path d="M0 3.5L5 0V4.5L0 7.5M0 12.5L5 9.5V14L0 17M0 20.5L5 17.5V22L0 24.5M24 3.5L19 0V4.5L24 7.5M24 12.5L19 9.5V14L24 17M24 20.5L19 17.5V22L24 24.5M12 3.5L7 0V4.5L12 7.5M12 12.5L7 9.5V14L12 17M12 20.5L7 17.5V22L12 24.5"/>
         </svg>

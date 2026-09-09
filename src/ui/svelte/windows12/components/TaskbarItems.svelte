@@ -35,14 +35,14 @@
     
     function handleClick(index: number) {
         selectedIndex = index;
-        // In a real implementation, this would focus the app
-        console.log('App clicked:', appItems[index].name);
+        const item = appItems[index];
+        console.log('App clicked:', item?.name);
     }
     
     function handleContextMenu(event: MouseEvent, index: number) {
         event.preventDefault();
-        // In a real implementation, this would show a context menu
-        console.log('Context menu for:', appItems[index].name);
+        const item = appItems[index];
+        console.log('Context menu for:', item?.name);
     }
 </script>
 
@@ -145,7 +145,10 @@
     {#each appItems.slice(0, maxItems) as item, index}
         <div 
             class="app-item {item.isRunning ? 'running' : ''} {selectedIndex === index ? 'selected' : ''}"
+            role="button"
+            tabindex="0"
             on:click={() => handleClick(index)}
+            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(index); } }}
             on:contextmenu={(e) => handleContextMenu(e, index)}
         >
             {#if item.thumbnail}
