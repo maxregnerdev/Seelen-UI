@@ -54,16 +54,4 @@ where
         }
     }
 }
-
-fn sign_sha256sums(path: &PathBuf) {
-    let key_base64 =
-        std::env::var("TAURI_SIGNING_PRIVATE_KEY").expect("TAURI_SIGNING_PRIVATE_KEY missing");
-    let password = std::env::var("TAURI_SIGNING_PRIVATE_KEY_PASSWORD")
-        .expect("TAURI_SIGNING_PRIVATE_KEY_PASSWORD missing");
-
-    let data = std::fs::read(path).expect("Failed to read SHA256SUMS file");
-    let signature = sign_minisign(&data, &key_base64, password).expect("Failed to sign data");
-
-    let sig_path = path.with_extension("sig");
-    std::fs::write(&sig_path, signature).expect("Failed to write signature");
 }
