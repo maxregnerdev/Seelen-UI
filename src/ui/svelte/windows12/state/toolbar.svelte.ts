@@ -1,7 +1,7 @@
 // Windows 12 Toolbar State
 // Enables Windows 12 features on Windows 11
 
-import { derived, readable, writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 
 // Toolbar visibility
 interface ToolbarState {
@@ -31,17 +31,13 @@ function createToolbarState() {
     // Toggle visibility
     toggle: () => update((state) => ({ ...state, visible: !state.visible })),
     // Set position
-    setPosition: (position: ToolbarState["position"]) =>
-      update((state) => ({ ...state, position })),
+    setPosition: (position: ToolbarState["position"]) => update((state) => ({ ...state, position })),
     // Set style
-    setStyle: (style: ToolbarState["style"]) =>
-      update((state) => ({ ...state, style })),
+    setStyle: (style: ToolbarState["style"]) => update((state) => ({ ...state, style })),
     // Toggle translucent
-    toggleTranslucent: () =>
-      update((state) => ({ ...state, translucent: !state.translucent })),
+    toggleTranslucent: () => update((state) => ({ ...state, translucent: !state.translucent })),
     // Toggle rounded corners
-    toggleRoundedCorners: () =>
-      update((state) => ({ ...state, roundedCorners: !state.roundedCorners })),
+    toggleRoundedCorners: () => update((state) => ({ ...state, roundedCorners: !state.roundedCorners })),
     // Reset to defaults
     reset: () =>
       set({
@@ -91,11 +87,9 @@ function createWidgetsState() {
     // Toggle visibility
     toggle: () => update((state) => ({ ...state, visible: !state.visible })),
     // Set position
-    setPosition: (position: WidgetsState["position"]) =>
-      update((state) => ({ ...state, position })),
+    setPosition: (position: WidgetsState["position"]) => update((state) => ({ ...state, position })),
     // Toggle expanded
-    toggleExpanded: () =>
-      update((state) => ({ ...state, expanded: !state.expanded })),
+    toggleExpanded: () => update((state) => ({ ...state, expanded: !state.expanded })),
     // Toggle widget visibility
     toggleWidget: (widget: keyof WidgetsState["widgets"]) =>
       update((state) => ({
@@ -150,8 +144,7 @@ function createSearchState() {
     // Toggle NPU
     toggleNpu: () => update((state) => ({ ...state, npuEnabled: !state.npuEnabled })),
     // Set suggestions
-    setSuggestions: (suggestions: string[]) =>
-      update((state) => ({ ...state, suggestions })),
+    setSuggestions: (suggestions: string[]) => update((state) => ({ ...state, suggestions })),
     // Reset to defaults
     reset: () =>
       set({
@@ -185,8 +178,8 @@ interface Windows12FeaturesState {
 }
 
 function createWindows12FeaturesState() {
-  // Initialize with all features enabled on Windows 11
-  const { subscribe, set, update } = writable<Windows12FeaturesState>({
+  // Keep the complete store so derived() can receive the store itself.
+  const store = writable<Windows12FeaturesState>({
     features: {
       deepAiIntegration: true,
       redesignedUi: true,
@@ -197,13 +190,16 @@ function createWindows12FeaturesState() {
     },
     system: {
       isWindows12: false,
-      isWindows11: true, // Enable on Windows 11
+      isWindows11: true,
       build: 22000,
     },
   });
 
+  const { set, update } = store;
+
   return {
-    subscribe,
+    subscribe: store.subscribe,
+
     // Enable feature
     enableFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -213,6 +209,7 @@ function createWindows12FeaturesState() {
           [feature]: true,
         },
       })),
+
     // Disable feature
     disableFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -222,6 +219,7 @@ function createWindows12FeaturesState() {
           [feature]: false,
         },
       })),
+
     // Toggle feature
     toggleFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -231,17 +229,17 @@ function createWindows12FeaturesState() {
           [feature]: !state.features[feature],
         },
       })),
+
     // Check if feature is enabled
     isFeatureEnabled: (feature: keyof Windows12FeaturesState["features"]) =>
-      derived(
-        subscribe,
-        ($state) => $state.features[feature],
-      ),
+      derived(store, ($state) => $state.features[feature]),
+
     // Check if Windows 12 features are enabled
     isEnabled: derived(
-      subscribe,
+      store,
       ($state) => $state.system.isWindows11 || $state.system.isWindows12,
     ),
+
     // Reset to defaults
     reset: () =>
       set({
