@@ -178,8 +178,8 @@ interface Windows12FeaturesState {
 }
 
 function createWindows12FeaturesState() {
-  // Initialize with all features enabled on Windows 11
-  const { subscribe, set, update } = writable<Windows12FeaturesState>({
+  // Keep the complete store so derived() can receive the store itself.
+  const store = writable<Windows12FeaturesState>({
     features: {
       deepAiIntegration: true,
       redesignedUi: true,
@@ -190,13 +190,16 @@ function createWindows12FeaturesState() {
     },
     system: {
       isWindows12: false,
-      isWindows11: true, // Enable on Windows 11
+      isWindows11: true,
       build: 22000,
     },
   });
 
+  const { set, update } = store;
+
   return {
-    subscribe,
+    subscribe: store.subscribe,
+
     // Enable feature
     enableFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -206,6 +209,7 @@ function createWindows12FeaturesState() {
           [feature]: true,
         },
       })),
+
     // Disable feature
     disableFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -215,6 +219,7 @@ function createWindows12FeaturesState() {
           [feature]: false,
         },
       })),
+
     // Toggle feature
     toggleFeature: (feature: keyof Windows12FeaturesState["features"]) =>
       update((state) => ({
@@ -224,14 +229,17 @@ function createWindows12FeaturesState() {
           [feature]: !state.features[feature],
         },
       })),
+
     // Check if feature is enabled
     isFeatureEnabled: (feature: keyof Windows12FeaturesState["features"]) =>
-      derived(subscribe, ($state) => $state.features[feature]),
+      derived(store, ($state) => $state.features[feature]),
+
     // Check if Windows 12 features are enabled
     isEnabled: derived(
-      subscribe,
+      store,
       ($state) => $state.system.isWindows11 || $state.system.isWindows12,
     ),
+
     // Reset to defaults
     reset: () =>
       set({
