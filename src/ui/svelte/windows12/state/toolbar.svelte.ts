@@ -37,8 +37,7 @@ function createToolbarState() {
     // Toggle translucent
     toggleTranslucent: () => update((state) => ({ ...state, translucent: !state.translucent })),
     // Toggle rounded corners
-    toggleRoundedCorners: () =>
-      update((state) => ({ ...state, roundedCorners: !state.roundedCorners })),
+    toggleRoundedCorners: () => update((state) => ({ ...state, roundedCorners: !state.roundedCorners })),
     // Reset to defaults
     reset: () =>
       set({
