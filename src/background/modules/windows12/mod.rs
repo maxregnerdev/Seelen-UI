@@ -99,10 +99,6 @@ impl Windows12Info {
     pub fn new() -> Self {
         use crate::utils::winver::*;
 
-        let is_win12 = is_windows_12();
-        let is_win11 = is_windows_11();
-        let build = windows_version_num();
-
         // All features are available on Windows 11 and 12
         let features = vec![
             Windows12Feature::DeepAiIntegration,
