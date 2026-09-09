@@ -222,7 +222,7 @@
 
 <div class="widgets-container {position}">
     {#if !isExpanded}
-        <div class="expand-button" on:click={toggleExpand} title="Expand widgets">
+        <div class="expand-button" role="button" tabindex="0" on:click={toggleExpand} on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpand(); } }} title="Expand widgets">
             ⚙️
         </div>
     {/if}
@@ -243,7 +243,10 @@
                             <div class="widget-actions">
                                 <span 
                                     class="widget-action"
+                                    role="button"
+                                    tabindex="0"
                                     on:click={() => toggleWidget(widget.id)}
+                                    on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleWidget(widget.id); } }}
                                     title="Hide widget"
                                 >
                                     ×
