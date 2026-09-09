@@ -112,7 +112,9 @@ impl PerformanceManager {
             ResourceAllocation {
                 resource_type: ResourceType::Cpu,
                 allocated: 0,
-                total: num_cpus::get() as u64 * 100, // Percentage
+                total: std::thread::available_parallelism()
+                    .map(|n| n.get() as u64 * 100)
+                    .unwrap_or(800),
                 priority: 100,
             },
         );

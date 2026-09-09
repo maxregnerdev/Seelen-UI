@@ -119,7 +119,7 @@ impl SecurityManager {
     /// Check if TPM meets minimum version requirement
     pub fn tpm_meets_requirement(&self, min_version: &str) -> bool {
         // Simple version comparison
-        self.tpm_version >= min_version
+        self.tpm_version.as_str() >= min_version
     }
 
     /// Enable zero-trust security model
@@ -158,8 +158,9 @@ impl SecurityManager {
 
     /// Enable all security policies
     pub fn enable_all_policies(&mut self) {
-        for policy in &self.policies {
-            self.enable_policy(*policy);
+        let policies = self.policies.clone();
+        for policy in policies {
+            self.enable_policy(policy);
         }
     }
 
@@ -211,7 +212,10 @@ impl SecurityManager {
 
         // Simulate threat detection
         let events = vec![SecurityEvent {
-            timestamp: chrono::Utc::now().timestamp(),
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs() as i64)
+                .unwrap_or(0),
             event_type: "ai_scan".to_string(),
             severity: ThreatLevel::None,
             description: "AI threat detection scan completed".to_string(),

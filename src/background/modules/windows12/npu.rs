@@ -4,7 +4,6 @@
 //! that are also enabled on Windows 11
 
 use crate::error::Result;
-use std::sync::Arc;
 
 /// NPU Accelerator for Deep AI Integration
 ///

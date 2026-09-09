@@ -272,8 +272,9 @@ impl GamingManager {
             return Err(format!("Game {} already registered", game.name).into());
         }
 
-        self.games.insert(game.name.clone(), game);
-        log::info!("Registered game: {}", game.name);
+        let name = game.name.clone();
+        self.games.insert(name.clone(), game);
+        log::info!("Registered game: {}", name);
         Ok(())
     }
 
@@ -300,26 +301,28 @@ impl GamingManager {
 
     /// Optimize for a specific game
     pub fn optimize_for_game(&mut self, game_name: &str) -> Result<()> {
-        if let Some(game) = self.games.get(game_name) {
-            if game.uses_direct_storage {
-                self.enable_direct_storage()?;
-            }
+        let (uses_direct_storage, supports_auto_hdr, xbox_enabled) =
+            match self.games.get(game_name) {
+                Some(game) => (game.uses_direct_storage, game.supports_auto_hdr, game.xbox_enabled),
+                None => return Err(format!("Game {} not found", game_name).into()),
+            };
 
-            if game.supports_auto_hdr {
-                self.enable_auto_hdr()?;
-            }
-
-            if game.xbox_enabled {
-                self.connect_xbox()?;
-            }
-
-            self.enable_game_mode();
-
-            log::info!("Optimized for game: {}", game_name);
-            Ok(())
-        } else {
-            Err(format!("Game {} not found", game_name).into())
+        if uses_direct_storage {
+            self.enable_direct_storage()?;
         }
+
+        if supports_auto_hdr {
+            self.enable_auto_hdr()?;
+        }
+
+        if xbox_enabled {
+            self.connect_xbox()?;
+        }
+
+        self.enable_game_mode();
+
+        log::info!("Optimized for game: {}", game_name);
+        Ok(())
     }
 
     /// Get gaming capabilities

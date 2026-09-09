@@ -5,7 +5,6 @@
 
 use crate::error::Result;
 use std::collections::HashMap;
-use std::sync::Mutex;
 
 /// Module type for CorePC architecture
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -143,24 +142,33 @@ impl CorepcManager {
 
     /// Load a module
     pub fn load_module(&mut self, module_id: &str) -> Result<()> {
-        if let Some(module) = self.modules.get_mut(module_id) {
-            if !module.is_loaded {
-                // Check dependencies
-                for dep in &module.dependencies {
-                    if !self.modules.contains_key(dep) {
-                        return Err(format!("Dependency {} not found", dep).into());
-                    }
-                }
+        let dependencies: Vec<String> = self
+            .modules
+            .get(module_id)
+            .filter(|m| !m.is_loaded)
+            .map(|m| m.dependencies.clone())
+            .unwrap_or_default();
 
-                module.is_loaded = true;
-                self.modules_loaded += 1;
-
-                log::info!("Loaded module: {}", module_id);
+        if dependencies.is_empty() {
+            if self.modules.contains_key(module_id) {
+                return Ok(());
             }
-            Ok(())
-        } else {
-            Err(format!("Module {} not found", module_id).into())
+            return Err(format!("Module {} not found", module_id).into());
         }
+
+        for dep in &dependencies {
+            if !self.modules.contains_key(dep) {
+                return Err(format!("Dependency {} not found", dep).into());
+            }
+        }
+
+        if let Some(module) = self.modules.get_mut(module_id) {
+            module.is_loaded = true;
+            self.modules_loaded += 1;
+            log::info!("Loaded module: {}", module_id);
+        }
+
+        Ok(())
     }
 
     /// Unload a module

@@ -14,6 +14,7 @@ pub mod system_settings;
 pub mod system_tray;
 pub mod trash_bin;
 pub mod user;
+#[allow(dead_code)]
 pub mod windows12;
 
 #[macro_export]

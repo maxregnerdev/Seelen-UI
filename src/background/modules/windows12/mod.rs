@@ -97,7 +97,7 @@ pub struct Windows12Info {
 
 impl Windows12Info {
     pub fn new() -> Self {
-        use crate::utils::winver::*;
+        use crate::utils::{is_windows_11, is_windows_12, windows_version_num};
 
         let is_win12 = is_windows_12();
         let is_win11 = is_windows_11();
@@ -204,42 +204,42 @@ pub fn get_features() -> Vec<Windows12Feature> {
 
 /// Get NPU accelerator
 pub fn npu() -> Option<Arc<Mutex<NpuAccelerator>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.npu.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.npu.clone())))
+    })
 }
 
 /// Get CorePC manager
 pub fn corepc() -> Option<Arc<Mutex<CorepcManager>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.corepc.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.corepc.clone())))
+    })
 }
 
 /// Get Security manager
 pub fn security() -> Option<Arc<Mutex<SecurityManager>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.security.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.security.clone())))
+    })
 }
 
 /// Get Performance manager
 pub fn performance() -> Option<Arc<Mutex<PerformanceManager>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.performance.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.performance.clone())))
+    })
 }
 
 /// Get Gaming manager
 pub fn gaming() -> Option<Arc<Mutex<GamingManager>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.gaming.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.gaming.clone())))
+    })
 }
 
 /// Get UI manager
 pub fn ui() -> Option<Arc<Mutex<UiManager>>> {
-    WINDOWS12_STATE
-        .get()
-        .map(|state| Arc::new(Mutex::new(state.lock().ok()?.ui.clone())))
+    WINDOWS12_STATE.get().and_then(|state| {
+        state.lock().ok().map(|s| Arc::new(Mutex::new(s.ui.clone())))
+    })
 }
